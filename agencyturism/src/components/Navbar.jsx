@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import { Menu, X, MapPin, Phone, Mail } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -48,24 +47,21 @@ const Navbar = () => {
                 {item.name}
               </a>
             ))}
-            <Button 
-              variant="outline" 
-              className={`${scrolled ? 'border-yellow-500 text-yellow-600 hover:bg-yellow-50' : 'border-white text-white hover:bg-white hover:text-gray-900'}`}
+            <button 
+              className={`px-4 py-2 border rounded-lg font-medium transition-colors ${scrolled ? 'border-yellow-500 text-yellow-600 hover:bg-yellow-50' : 'border-white text-white hover:bg-white hover:text-gray-900'}`}
             >
               Reservar Ahora
-            </Button>
+            </button>
           </div>
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <Button
-              variant="ghost"
-              size="sm"
+            <button
               onClick={() => setIsOpen(!isOpen)}
-              className={scrolled ? 'text-gray-900' : 'text-white'}
+              className={`p-2 rounded-md ${scrolled ? 'text-gray-900' : 'text-white'}`}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </Button>
+            </button>
           </div>
         </div>
 
@@ -84,9 +80,9 @@ const Navbar = () => {
                 </a>
               ))}
               <div className="px-3 py-2">
-                <Button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white">
+                <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium transition-colors">
                   Reservar Ahora
-                </Button>
+                </button>
               </div>
             </div>
           </div>

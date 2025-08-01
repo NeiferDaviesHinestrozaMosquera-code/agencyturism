@@ -1,90 +1,5 @@
-import React, { Suspense, useRef, useState } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Text, Float, useTexture, Sphere } from '@react-three/drei'
-import { Button } from '@/components/ui/button'
+import React, { useState } from 'react'
 import { MapPin, Star, Calendar, Users } from 'lucide-react'
-
-// Componente de esfera 3D con textura
-const DestinationSphere = ({ texture, position, onClick, isActive }) => {
-  const meshRef = useRef()
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.01
-      if (isActive) {
-        meshRef.current.scale.setScalar(1.1 + Math.sin(state.clock.elapsedTime * 2) * 0.05)
-      } else {
-        meshRef.current.scale.setScalar(1)
-      }
-    }
-  })
-
-  return (
-    <Float speed={1} rotationIntensity={0.2} floatIntensity={0.1}>
-      <mesh
-        ref={meshRef}
-        position={position}
-        onClick={onClick}
-        onPointerOver={(e) => {
-          e.stopPropagation()
-          document.body.style.cursor = 'pointer'
-        }}
-        onPointerOut={() => {
-          document.body.style.cursor = 'auto'
-        }}
-      >
-        <sphereGeometry args={[0.8, 32, 32]} />
-        <meshStandardMaterial 
-          map={texture} 
-          emissive={isActive ? "#ffdd44" : "#000000"}
-          emissiveIntensity={isActive ? 0.2 : 0}
-        />
-      </mesh>
-    </Float>
-  )
-}
-
-// Escena 3D de destinos
-const DestinationsScene = ({ destinations, activeDestination, setActiveDestination }) => {
-  return (
-    <Canvas
-      camera={{ position: [0, 0, 6], fov: 60 }}
-      style={{ height: '400px' }}
-    >
-      <Suspense fallback={null}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, 0, -10]} color="#ffdd44" intensity={0.3} />
-        
-        {destinations.map((destination, index) => {
-          const angle = (index / destinations.length) * Math.PI * 2
-          const radius = 3
-          const position = [
-            Math.cos(angle) * radius,
-            Math.sin(angle * 0.5) * 0.5,
-            Math.sin(angle) * radius
-          ]
-          
-          return (
-            <DestinationSphere
-              key={destination.id}
-              position={position}
-              onClick={() => setActiveDestination(index)}
-              isActive={activeDestination === index}
-            />
-          )
-        })}
-        
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate={true}
-          autoRotateSpeed={1}
-        />
-      </Suspense>
-    </Canvas>
-  )
-}
 
 const Destinations = () => {
   const [activeDestination, setActiveDestination] = useState(0)
@@ -94,7 +9,7 @@ const Destinations = () => {
       id: 1,
       name: "Cartagena de Indias",
       description: "Ciudad amurallada llena de historia, cultura y arquitectura colonial única.",
-      image: "/src/assets/rzSvJ79ira3H.jpg",
+      image: "/images/cartagena.jpg",
       price: "$299",
       duration: "4 días",
       rating: 4.9,
@@ -104,7 +19,7 @@ const Destinations = () => {
       id: 2,
       name: "Eje Cafetero",
       description: "Paisajes montañosos, plantaciones de café y la cultura paisa más auténtica.",
-      image: "/src/assets/ptGahub03730.jpeg",
+      image: "/images/coffee-region.jpg",
       price: "$249",
       duration: "5 días",
       rating: 4.8,
@@ -112,19 +27,19 @@ const Destinations = () => {
     },
     {
       id: 3,
-      name: "Caño Cristales",
-      description: "El río más hermoso del mundo con sus colores únicos y biodiversidad.",
-      image: "/src/assets/sP0dEc9iv6HL.jpeg",
-      price: "$399",
+      name: "Valle de Cocora",
+      description: "Hogar de las palmas de cera más altas del mundo y paisajes únicos.",
+      image: "/images/cocora-valley.jpg",
+      price: "$199",
       duration: "3 días",
       rating: 4.9,
-      highlights: ["Río de Colores", "Naturaleza Virgen", "Aventura Extrema"]
+      highlights: ["Palmas de Cera", "Senderismo", "Naturaleza Exuberante"]
     },
     {
       id: 4,
       name: "Tayrona",
       description: "Parque nacional con playas paradisíacas y selva tropical exuberante.",
-      image: "/src/assets/c6SOnEPv4N7w.jpg",
+      image: "/images/tayrona.jpg",
       price: "$199",
       duration: "3 días",
       rating: 4.7,
@@ -148,14 +63,33 @@ const Destinations = () => {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Escena 3D */}
+          {/* Galería de destinos */}
           <div className="relative">
             <div className="bg-white rounded-2xl shadow-2xl p-6">
-              <DestinationsScene 
-                destinations={destinations}
-                activeDestination={activeDestination}
-                setActiveDestination={setActiveDestination}
-              />
+              <div className="grid grid-cols-2 gap-4 h-96">
+                {destinations.map((destination, index) => (
+                  <div
+                    key={destination.id}
+                    onClick={() => setActiveDestination(index)}
+                    className={`relative overflow-hidden rounded-xl cursor-pointer transition-all duration-300 ${
+                      activeDestination === index 
+                        ? 'ring-4 ring-yellow-500 scale-105' 
+                        : 'hover:scale-102'
+                    }`}
+                  >
+                    <img 
+                      src={destination.image}
+                      alt={destination.name}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                    <div className="absolute bottom-2 left-2 text-white">
+                      <h4 className="font-semibold text-sm">{destination.name}</h4>
+                      <p className="text-xs opacity-90">{destination.price}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
             
             {/* Controles de navegación */}
@@ -230,13 +164,10 @@ const Destinations = () => {
                   <span className="text-gray-500 ml-2">por persona</span>
                 </div>
                 
-                <Button 
-                  size="lg"
-                  className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
-                >
-                  <Users className="mr-2 h-5 w-5" />
+                <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300 flex items-center gap-2">
+                  <Users className="h-5 w-5" />
                   Reservar Ahora
-                </Button>
+                </button>
               </div>
             </div>
           </div>

@@ -1,28 +1,26 @@
 import React, { useState } from 'react'
-import { useAuth } from '../../contexts/AuthContext'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { MapPin, Lock, Mail, AlertCircle } from 'lucide-react'
 
-const AdminLogin = () => {
+const AdminLogin = ({ onLogin }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
-  const { login } = useAuth()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
     setLoading(true)
 
-    try {
-      await login(email, password)
-    } catch (error) {
-      setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.')
-    } finally {
+    // Simulación de autenticación
+    setTimeout(() => {
+      if (email === 'admin@colombiamagica.com' && password === 'admin123') {
+        onLogin()
+      } else {
+        setError('Credenciales incorrectas. Por favor, verifica tu email y contraseña.')
+      }
       setLoading(false)
-    }
+    }, 1000)
   }
 
   return (
@@ -57,12 +55,12 @@ const AdminLogin = () => {
               </label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <Input
+                <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="admin@colombiamagica.com"
-                  className="pl-10"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   required
                 />
               </div>
@@ -74,24 +72,24 @@ const AdminLogin = () => {
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <Input
+                <input
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="pl-10"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500"
                   required
                 />
               </div>
             </div>
 
-            <Button
+            <button
               type="submit"
-              className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+              className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-md transition-colors disabled:opacity-50"
               disabled={loading}
             >
               {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-            </Button>
+            </button>
           </form>
 
           {/* Información de demo */}

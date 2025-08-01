@@ -1,80 +1,5 @@
-import React, { Suspense, useRef } from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
-import { OrbitControls, Text3D, Float, Center } from '@react-three/drei'
-import { Button } from '@/components/ui/button'
+import React from 'react'
 import { Award, Users, MapPin, Heart } from 'lucide-react'
-
-// Componente de logo 3D animado
-const Logo3D = () => {
-  const logoRef = useRef()
-  
-  useFrame((state) => {
-    if (logoRef.current) {
-      logoRef.current.rotation.y = Math.sin(state.clock.elapsedTime) * 0.3
-      logoRef.current.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.1
-    }
-  })
-
-  return (
-    <Float speed={2} rotationIntensity={0.3} floatIntensity={0.2}>
-      <group ref={logoRef}>
-        {/* Forma principal del logo */}
-        <mesh position={[0, 0, 0]}>
-          <cylinderGeometry args={[0.8, 1.2, 0.3, 6]} />
-          <meshStandardMaterial 
-            color="#ffdd44" 
-            emissive="#ffaa00" 
-            emissiveIntensity={0.2}
-          />
-        </mesh>
-        
-        {/* Elementos decorativos */}
-        <mesh position={[0, 0.5, 0]}>
-          <sphereGeometry args={[0.3, 16, 16]} />
-          <meshStandardMaterial 
-            color="#ff6b35" 
-            emissive="#ff4500" 
-            emissiveIntensity={0.3}
-          />
-        </mesh>
-        
-        <mesh position={[0, -0.5, 0]}>
-          <boxGeometry args={[1.5, 0.2, 0.2]} />
-          <meshStandardMaterial 
-            color="#4ecdc4" 
-            emissive="#00ced1" 
-            emissiveIntensity={0.2}
-          />
-        </mesh>
-      </group>
-    </Float>
-  )
-}
-
-// Escena 3D para la sección About
-const AboutScene = () => {
-  return (
-    <Canvas
-      camera={{ position: [0, 0, 5], fov: 60 }}
-      style={{ height: '300px' }}
-    >
-      <Suspense fallback={null}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, 0, -10]} color="#ffdd44" intensity={0.5} />
-        
-        <Logo3D />
-        
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate={true}
-          autoRotateSpeed={2}
-        />
-      </Suspense>
-    </Canvas>
-  )
-}
 
 const About = () => {
   const stats = [
@@ -158,23 +83,24 @@ const About = () => {
               </div>
             </div>
 
-            <Button 
-              size="lg"
-              className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
-            >
+            <button className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold px-6 py-3 rounded-lg transition-all duration-300">
               Conoce Nuestro Equipo
-            </Button>
+            </button>
           </div>
 
-          {/* Escena 3D */}
+          {/* Imagen y elementos visuales */}
           <div className="relative">
             <div className="bg-gradient-to-br from-yellow-50 to-blue-50 rounded-2xl shadow-xl p-8">
-              <AboutScene />
+              <img 
+                src="/images/bogota.jpg" 
+                alt="Equipo Colombia Mágica" 
+                className="w-full h-80 object-cover rounded-xl"
+              />
             </div>
             
             {/* Elementos decorativos */}
             <div className="absolute -top-4 -right-4 w-24 h-24 bg-yellow-400 rounded-full opacity-20 animate-pulse" />
-            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-400 rounded-full opacity-20 animate-pulse animation-delay-1000" />
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-blue-400 rounded-full opacity-20 animate-pulse" />
           </div>
         </div>
 
