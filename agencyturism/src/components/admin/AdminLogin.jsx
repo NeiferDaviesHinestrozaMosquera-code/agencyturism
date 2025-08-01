@@ -96,7 +96,8 @@ const AdminLogin = ({ onLogin }) => {
           <div className="mt-6 p-4 bg-blue-50 rounded-lg">
             <h4 className="font-semibold text-blue-900 mb-2">Credenciales de Demo:</h4>
             <p className="text-sm text-blue-700">
-              <strong>Email:</strong> admin@colombiamagica.com<br />
+              <strong>Email:</strong> admin@colombiamagica.com  
+
               <strong>Contraseña:</strong> admin123
             </p>
           </div>
@@ -114,4 +115,3 @@ const AdminLogin = ({ onLogin }) => {
 }
 
 export default AdminLogin
-

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
 import AdminLogin from './AdminLogin'
 import AdminDashboard from './AdminDashboard'
 
@@ -12,14 +11,9 @@ const AdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <Routes>
-        <Route path="/" element={<AdminDashboard />} />
-        <Route path="/dashboard" element={<AdminDashboard />} />
-        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
-      </Routes>
+      <AdminDashboard />
     </div>
   )
 }
 
 export default AdminPanel
-
