@@ -1,17 +1,18 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { 
-  Search, 
-  Filter, 
-  Download, 
-  Eye, 
-  Check, 
-  X, 
+import {
+  Search,
+  Filter,
+  Download,
+  Eye,
+  Check,
+  X,
   Calendar,
   User,
   MapPin,
-  DollarSign
+  DollarSign,
+  Clock
 } from 'lucide-react'
 
 const AdminBookings = () => {
@@ -87,19 +88,19 @@ const AdminBookings = () => {
   ])
 
   const filteredBookings = bookings.filter(booking => {
-    const matchesSearch = 
+    const matchesSearch =
       booking.customer.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.destination.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.id.toLowerCase().includes(searchTerm.toLowerCase())
-    
+
     const matchesStatus = statusFilter === 'all' || booking.status === statusFilter
-    
+
     return matchesSearch && matchesStatus
   })
 
   const handleStatusChange = (bookingId, newStatus) => {
-    setBookings(bookings.map(booking => 
-      booking.id === bookingId 
+    setBookings(bookings.map(booking =>
+      booking.id === bookingId
         ? { ...booking, status: newStatus }
         : booking
     ))
@@ -160,7 +161,7 @@ const AdminBookings = () => {
               />
             </div>
           </div>
-          
+
           <div className="flex gap-2">
             <select
               value={statusFilter}
@@ -187,7 +188,7 @@ const AdminBookings = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center">
             <Check className="h-8 w-8 text-green-500 mr-3" />
@@ -199,7 +200,7 @@ const AdminBookings = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center">
             <Clock className="h-8 w-8 text-yellow-500 mr-3" />
@@ -211,7 +212,7 @@ const AdminBookings = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-500 mr-3" />
@@ -357,4 +358,5 @@ const AdminBookings = () => {
 }
 
 export default AdminBookings
+
 

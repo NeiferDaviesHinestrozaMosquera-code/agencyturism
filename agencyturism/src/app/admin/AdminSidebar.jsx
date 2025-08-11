@@ -1,25 +1,28 @@
-import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  MapPin, 
-  Calendar, 
-  Users, 
-  Settings, 
+"use client";
+import React from 'react';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  LayoutDashboard,
+  MapPin,
+  Calendar,
+  Users,
+  Settings,
   X,
   LogOut
-} from 'lucide-react'
-import { useAuth } from '../../contexts/AuthContext'
-import { Button } from '@/components/ui/button'
+} from 'lucide-react';
+import { useAuth } from './AuthContext';
+import { Button } from '@/components/ui/button';
 
 const AdminSidebar = ({ isOpen, setIsOpen }) => {
-  const location = useLocation()
-  const { logout } = useAuth()
+  const pathname = usePathname();
+  const router = useRouter();
+  const { logout } = useAuth();
 
   const menuItems = [
     {
       name: 'Dashboard',
-      href: '/admin/dashboard',
+      href: '/admin',
       icon: LayoutDashboard
     },
     {
@@ -42,21 +45,22 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
       href: '/admin/settings',
       icon: Settings
     }
-  ]
+  ];
 
   const handleLogout = async () => {
     try {
-      await logout()
+      logout();
+      router.push('/admin'); // Redirigir al login después de cerrar sesión
     } catch (error) {
-      console.error('Error al cerrar sesión:', error)
+      console.error('Error al cerrar sesión:', error);
     }
-  }
+  };
 
   return (
     <>
       {/* Overlay para móvil */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
@@ -74,7 +78,7 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
             <MapPin className="h-8 w-8 text-yellow-500" />
             <span className="text-xl font-bold text-gray-900">Admin Panel</span>
           </div>
-          
+
           <Button
             variant="ghost"
             size="sm"
@@ -88,16 +92,16 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
         {/* Navegación */}
         <nav className="flex-1 px-4 py-6 space-y-2">
           {menuItems.map((item) => {
-            const isActive = location.pathname === item.href
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={item.name}
-                to={item.href}
+                href={item.href}
                 onClick={() => setIsOpen(false)}
                 className={`
                   flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors
-                  ${isActive 
-                    ? 'bg-yellow-50 text-yellow-700 border-r-2 border-yellow-500' 
+                  ${isActive
+                    ? 'bg-yellow-50 text-yellow-700 border-r-2 border-yellow-500'
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }
                 `}
@@ -105,7 +109,7 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
                 <item.icon className="h-5 w-5" />
                 <span className="font-medium">{item.name}</span>
               </Link>
-            )
+            );
           })}
         </nav>
 
@@ -122,8 +126,9 @@ const AdminSidebar = ({ isOpen, setIsOpen }) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default AdminSidebar
+export default AdminSidebar;
+
 
